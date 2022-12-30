@@ -1,6 +1,6 @@
 import requests
 
-from constants import OMDB_API_KEY
+from constants import OMDB_API_KEY  # type: ignore
 
 OMDB_URL = "http://www.omdbapi.com"
 
