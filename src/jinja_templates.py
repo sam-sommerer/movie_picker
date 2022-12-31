@@ -46,7 +46,7 @@ CHECK_GENRE_EXISTS_TEMPLATE = """
 """
 
 FILTER_TEMPLATE = """
-    SELECT * FROM movies
+    SELECT movies.title, movies.year FROM movies
     INNER JOIN actors USING(imdb_id)
     INNER JOIN directors USING(imdb_id)
     INNER JOIN genres USING(imdb_id)
@@ -59,6 +59,7 @@ FILTER_TEMPLATE = """
     {% if genres %}
     WHERE genre_type in {{ genres }}
     {% endif %}
+    GROUP BY movies.imdb_id
     {% if random %}
     ORDER BY RANDOM()
     {% endif %}

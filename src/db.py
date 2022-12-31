@@ -16,6 +16,7 @@ from jinja_templates import (
     CHECK_ACTOR_EXISTS_TEMPLATE,
     CHECK_DIRECTOR_EXISTS_TEMPLATE,
     CHECK_GENRE_EXISTS_TEMPLATE,
+    FILTER_TEMPLATE,
 )  # type: ignore
 
 
@@ -220,5 +221,17 @@ def check_if_genre_exists(
     return genres_dict
 
 
-def select_from_filter(data: dict[str, Any]) -> None:
-    pass
+# do we want filters to be AND or OR?
+def select_from_filter(
+    data: dict[str, str | bool]
+) -> list[tuple[str, str]] | tuple[str, str]:
+    con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
+    cur: sqlite3.Cursor = con.cursor()
+
+    j = JinjaSql(param_style="qmark")  # type: ignore
+    query: str
+    bind_params: dict[str, Any]
+    query, bind_params = j.prepare_query(FILTER_TEMPLATE, data)
+    result = cur.execute(query, bind_params)
+
+    return result.fetchall()
