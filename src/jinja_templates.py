@@ -34,13 +34,13 @@ CHECK_MOVIE_EXISTS_TEMPLATE = """
 """
 
 CHECK_ACTOR_EXISTS_TEMPLATE = """
-    SELECT * FROM actors WHERE ACTORS.NAME = {{ name }}
+    SELECT actor_id FROM actors WHERE ACTORS.NAME = {{ name }}
 """
 
 CHECK_DIRECTOR_EXISTS_TEMPLATE = """
-    SELECT * FROM directors WHERE DIRECTORS.NAME = {{ name }}
+    SELECT director_id FROM directors WHERE DIRECTORS.NAME = {{ name }}
 """
 
 CHECK_GENRE_EXISTS_TEMPLATE = """
-    SELECT * FROM genres WHERE GENRES.genre_type = {{ genre_type }}
+    SELECT genre_id FROM genres WHERE GENRES.genre_type = {{ genre_type }}
 """

@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 import db
 
@@ -19,19 +19,21 @@ def register_movie(
     imdb_id: str = movie["imdb_id"]
 
     # check if actor(s) already in db
-    actors_dict: dict[str, bool] = {actor: False for actor in actors}
+    actors_dict: dict[str, Optional[str]] = {actor: None for actor in actors}
     actors_dict = db.check_if_actor_exists(actors_dict)
 
     db.insert_actor(actors_dict, imdb_id=imdb_id)
 
     # check if director(s) already in db
-    directors_dict: dict[str, bool] = {director: False for director in directors}
+    directors_dict: dict[str, Optional[str]] = {
+        director: None for director in directors
+    }
     directors_dict = db.check_if_director_exists(directors_dict)
 
     db.insert_director(directors_dict, imdb_id=imdb_id)
 
     # check if genre(s) already in db
-    genres_dict: dict[str, bool] = {genre: False for genre in genres}
+    genres_dict: dict[str, Optional[str]] = {genre: None for genre in genres}
     genres_dict = db.check_if_genre_exists(genres_dict)
 
     db.insert_genre(genres_dict, imdb_id=imdb_id)
