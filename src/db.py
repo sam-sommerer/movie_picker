@@ -1,5 +1,5 @@
 import sqlite3
-import shortuuid
+import shortuuid  # type: ignore
 
 from typing import Any
 from jinjasql import JinjaSql
