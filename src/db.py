@@ -118,7 +118,7 @@ def insert_genre(genres_dict: dict[str, bool], imdb_id: str) -> None:
 def check_if_movie_exists(title: str, year: str) -> bool:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
-    data: dict[str, str] = {"movie": title, "year": year}
+    data: dict[str, str] = {"title": title, "year": year}
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     query: str
@@ -126,9 +126,10 @@ def check_if_movie_exists(title: str, year: str) -> bool:
     query, bind_params = j.prepare_query(CHECK_MOVIE_EXISTS_TEMPLATE, data)
 
     result = cur.execute(query, bind_params)
+    exists = result.fetchone() is not None
     con.close()
 
-    return result.fetchone() is not None
+    return exists
 
 
 def check_if_actor_exists(actors_dict: dict[str, bool]) -> dict[str, bool]:
