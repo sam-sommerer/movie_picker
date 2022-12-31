@@ -41,4 +41,7 @@ def extract_db_information(response: dict[str, Any]) -> Any:
         directors_str.split(", ") if directors_str is not None else None
     )
 
-    return actors_list, directors_list, movie_db_attr
+    genre_str: str = response["Genre"]
+    genre_list: list[str] = genre_str.split(", ") if genre_str is not None else None
+
+    return actors_list, directors_list, genre_list, movie_db_attr
