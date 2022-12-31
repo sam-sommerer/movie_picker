@@ -36,6 +36,7 @@ def extract_db_information(response: dict[str, Any]) -> Any:
     actors: str = response["Actors"]
     actors: list[str] = actors.split(", ") if actors is not None else None
 
-    director: str = response["Director"]
+    directors: str = response["Director"]
+    directors: list[str] = directors.split(", ") if directors is not None else None
 
-    return actors, director, movie_db_attr
+    return actors, directors, movie_db_attr
