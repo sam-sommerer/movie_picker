@@ -1,4 +1,5 @@
 .idea/
 database/
+*/__pycache__
 
 */constants.py
