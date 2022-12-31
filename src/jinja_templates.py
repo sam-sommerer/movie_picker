@@ -44,3 +44,25 @@ CHECK_DIRECTOR_EXISTS_TEMPLATE = """
 CHECK_GENRE_EXISTS_TEMPLATE = """
     SELECT genre_id FROM genres WHERE GENRES.genre_type = {{ genre_type }}
 """
+
+FILTER_TEMPLATE = """
+    SELECT * FROM movies
+    INNER JOIN actors USING(imdb_id)
+    INNER JOIN directors USING(imdb_id)
+    INNER JOIN genres USING(imdb_id)
+    {% if actors %}
+    WHERE actors.name in {{ actors }}
+    {% endif %}
+    {% if directors %}
+    WHERE directors.name in {{ directors }}
+    {% endif %}
+    {% if genres %}
+    WHERE genre_type in {{ genres }}
+    {% endif %}
+    {% if random %}
+    ORDER BY RANDOM()
+    {% endif %}
+    {% if num %}
+    LIMIT {{ num }}
+    {% endif %}
+"""
