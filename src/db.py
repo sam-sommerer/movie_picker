@@ -223,7 +223,7 @@ def check_if_genre_exists(
 
 # do we want filters to be AND or OR?
 def select_from_filter(
-    data: dict[str, str | bool]
+    data: dict[str, list[str] | int | bool]
 ) -> list[tuple[str, str]] | tuple[str, str]:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
