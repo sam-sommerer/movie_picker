@@ -5,14 +5,22 @@ INSERT_MOVIE_TEMPLATE = """
     )
 """
 
+INSERT_ACTOR_TEMPLATE = """
+    INSERT INTO actors VALUES ({{ actor_id }}, {{ name }})
+"""
+
+INSERT_DIRECTOR_TEMPLATE = """
+    INSERT INTO directors VALUES ({{ director_id }}, {{ name }})
+"""
+
 CHECK_MOVIE_EXISTS_TEMPLATE = """
-    SELECT * FROM MOVIES WHERE MOVIES.TITLE = {{ title }} AND MOVIES.YEAR = {{ year }}
+    SELECT * FROM movies WHERE MOVIES.TITLE = {{ title }} AND MOVIES.YEAR = {{ year }}
 """
 
 CHECK_ACTOR_EXISTS_TEMPLATE = """
-    SELECT * FROM ACTORS WHERE ACTORS.NAME = {{ name }}
+    SELECT * FROM actors WHERE ACTORS.NAME = {{ name }}
 """
 
 CHECK_DIRECTOR_EXISTS_TEMPLATE = """
-    SELECT * FROM DIRECTORS WHERE DIRECTORS.NAME = {{ name }}
+    SELECT * FROM directors WHERE DIRECTORS.NAME = {{ name }}
 """
