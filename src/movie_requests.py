@@ -17,9 +17,9 @@ def extract_db_information(response: dict[str, Any]) -> Any:
 
     movie_db_attr["imdb_id"] = response["imdbID"]
     movie_db_attr["title"] = response["Title"]
-    movie_db_attr["year"] = int(response["Year"])
+    movie_db_attr["year"] = response["Year"]
     movie_db_attr["rating"] = response["Rated"]
-    movie_db_attr["runtime"] = int(response["Runtime"].split()[0])
+    movie_db_attr["runtime"] = response["Runtime"].split()[0]
     movie_db_attr["plot"] = response["Plot"]
 
     rotten_tomato_rating: Optional[int] = None
@@ -27,9 +27,9 @@ def extract_db_information(response: dict[str, Any]) -> Any:
     for rating in response["Ratings"]:
         if rating.get("Source") is not None:
             if rating.get("Source") == "Rotten Tomatoes":
-                rotten_tomato_rating = int(rating.get("Value")[:-1])
+                rotten_tomato_rating = rating.get("Value")[:-1]
             elif rating.get("Source") == "Internet Movie Database":
-                imdb_rating = float(rating.get("Value").split("/")[0])
+                imdb_rating = rating.get("Value").split("/")[0]
     movie_db_attr["rotten_tomato_rating"] = rotten_tomato_rating
     movie_db_attr["imdb_rating"] = imdb_rating
 
@@ -41,4 +41,7 @@ def extract_db_information(response: dict[str, Any]) -> Any:
         directors_str.split(", ") if directors_str is not None else None
     )
 
-    return actors_list, directors_list, movie_db_attr
+    genre_str: str = response["Genre"]
+    genre_list: list[str] = genre_str.split(", ") if genre_str is not None else None
+
+    return actors_list, directors_list, genre_list, movie_db_attr
