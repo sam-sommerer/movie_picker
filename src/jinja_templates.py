@@ -17,6 +17,18 @@ INSERT_GENRE_TEMPLATE = """
     INSERT INTO genres VALUES ({{ genre_id }}, {{ genre_type }})
 """
 
+INSERT_MOVIE_ACTOR_TEMPLATE = """
+    INSERT INTO movie_actors VALUES ({{ imdb_id }}, {{ actor_id }})
+"""
+
+INSERT_MOVIE_DIRECTOR_TEMPLATE = """
+    INSERT INTO movie_directors VALUES ({{ imdb_id }}, {{ director_id }})
+"""
+
+INSERT_MOVIE_GENRE_TEMPLATE = """
+    INSERT INTO movie_genres VALUES ({{ imdb_id }}, {{ genre_id }})
+"""
+
 CHECK_MOVIE_EXISTS_TEMPLATE = """
     SELECT * FROM movies WHERE MOVIES.TITLE = {{ title }} AND MOVIES.YEAR = {{ year }}
 """

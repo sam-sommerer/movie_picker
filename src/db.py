@@ -9,6 +9,9 @@ from jinja_templates import (
     INSERT_ACTOR_TEMPLATE,
     INSERT_DIRECTOR_TEMPLATE,
     INSERT_GENRE_TEMPLATE,
+    INSERT_MOVIE_ACTOR_TEMPLATE,
+    INSERT_MOVIE_DIRECTOR_TEMPLATE,
+    INSERT_MOVIE_GENRE_TEMPLATE,
     CHECK_MOVIE_EXISTS_TEMPLATE,
     CHECK_ACTOR_EXISTS_TEMPLATE,
     CHECK_DIRECTOR_EXISTS_TEMPLATE,
@@ -30,7 +33,7 @@ def insert_movie(attr: dict[str, str]) -> None:
     con.close()
 
 
-def insert_actor(actors_dict: dict[str, bool]) -> None:
+def insert_actor(actors_dict: dict[str, bool], imdb_id: str) -> None:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
 
@@ -39,7 +42,9 @@ def insert_actor(actors_dict: dict[str, bool]) -> None:
         if not actors_dict[actor]:
             continue
 
-        data: dict[str, str] = {"actor_id": shortuuid.uuid(), "name": actor}
+        actor_id: str = shortuuid.uuid()
+
+        data: dict[str, str] = {"actor_id": actor_id, "name": actor}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_ACTOR_TEMPLATE, data)
@@ -47,10 +52,15 @@ def insert_actor(actors_dict: dict[str, bool]) -> None:
         cur.execute(query, bind_params)
         con.commit()
 
+        data = {"imdb_id": imdb_id, "actor_id": actor_id}
+        query, bind_params = j.prepare_query(INSERT_MOVIE_ACTOR_TEMPLATE, data)
+
+        cur.execute(query, bind_params)
+
     con.close()
 
 
-def insert_director(directors_dict: dict[str, bool]) -> None:
+def insert_director(directors_dict: dict[str, bool], imdb_id: str) -> None:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
 
@@ -59,7 +69,9 @@ def insert_director(directors_dict: dict[str, bool]) -> None:
         if not directors_dict[director]:
             continue
 
-        data: dict[str, str] = {"director_id": shortuuid.uuid(), "name": director}
+        director_id: str = shortuuid.uuid()
+
+        data: dict[str, str] = {"director_id": director_id, "name": director}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_DIRECTOR_TEMPLATE, data)
@@ -67,10 +79,15 @@ def insert_director(directors_dict: dict[str, bool]) -> None:
         cur.execute(query, bind_params)
         con.commit()
 
+        data = {"imdb_id": imdb_id, "director_id": director_id}
+        query, bind_params = j.prepare_query(INSERT_MOVIE_DIRECTOR_TEMPLATE, data)
+
+        cur.execute(query, bind_params)
+
     con.close()
 
 
-def insert_genre(genres_dict: dict[str, bool]) -> None:
+def insert_genre(genres_dict: dict[str, bool], imdb_id: str) -> None:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
 
@@ -79,10 +96,18 @@ def insert_genre(genres_dict: dict[str, bool]) -> None:
         if not genres_dict[genre]:
             continue
 
-        data: dict[str, str] = {"genre_id": shortuuid.uuid(), "genre_type": genre}
+        genre_id: str = shortuuid.uuid()
+
+        data: dict[str, str] = {"genre_id": genre_id, "genre_type": genre}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_GENRE_TEMPLATE, data)
+
+        cur.execute(query, bind_params)
+        con.commit()
+
+        data = {"imdb_id": imdb_id, "genre_id": genre_id}
+        query, bind_params = j.prepare_query(INSERT_MOVIE_GENRE_TEMPLATE, data)
 
         cur.execute(query, bind_params)
         con.commit()
