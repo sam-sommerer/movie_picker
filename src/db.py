@@ -2,7 +2,7 @@ import sqlite3
 import shortuuid  # type: ignore
 
 from typing import Any
-from jinjasql import JinjaSql
+from jinjasql import JinjaSql  # type: ignore
 from constants import DB_FILEPATH  # type: ignore
 from jinja_templates import (
     INSERT_MOVIE_TEMPLATE,
