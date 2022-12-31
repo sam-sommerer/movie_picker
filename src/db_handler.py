@@ -37,3 +37,27 @@ def register_movie(
     genres_dict = db.check_if_genre_exists(genres_dict)
 
     db.insert_genre(genres_dict, imdb_id=imdb_id)
+
+
+def get_filtered_movies(
+    actors: Optional[list[str]] = None,
+    directors: Optional[list[str]] = None,
+    genres: Optional[list[str]] = None,
+    num: Optional[int] = None,
+    random: bool = False,
+) -> Optional[list[tuple[str, str, str, str]] | tuple[str, str, str, str]]:
+    data: dict[str, list[str] | int | bool] = dict()
+
+    # use locals()/vars() instead?
+    if actors is not None:
+        data["actors"] = actors
+    if directors is not None:
+        data["directors"] = directors
+    if genres is not None:
+        data["genres"] = genres
+    if num is not None:
+        data["num"] = num
+    if random:
+        data["random"] = random
+
+    return db.select_from_filter(data)
