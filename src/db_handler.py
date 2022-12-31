@@ -45,7 +45,7 @@ def get_filtered_movies(
     genres: Optional[list[str]] = None,
     num: Optional[int] = None,
     random: bool = False,
-) -> list[tuple[str, str]]:
+) -> Optional[list[tuple[str, str, str, str]] | tuple[str, str, str, str]]:
     data: dict[str, list[str] | int | bool] = dict()
 
     # use locals()/vars() instead?

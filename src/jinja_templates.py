@@ -46,24 +46,43 @@ CHECK_GENRE_EXISTS_TEMPLATE = """
 """
 
 FILTER_TEMPLATE = """
-    SELECT movies.title, movies.year FROM movies
-    INNER JOIN actors USING(imdb_id)
-    INNER JOIN directors USING(imdb_id)
-    INNER JOIN genres USING(imdb_id)
+    SELECT movies.title, movies.year, movies.imdb_rating, movies.rotten_tomato_rating FROM movies
     {% if actors %}
-    WHERE actors.name in {{ actors }}
+        INNER JOIN movie_actors USING(imdb_id)
+        INNER JOIN actors USING(actor_id)
     {% endif %}
     {% if directors %}
-    WHERE directors.name in {{ directors }}
+        INNER JOIN movie_directors USING(imdb_id)
+        INNER JOIN directors USING(director_id)
     {% endif %}
     {% if genres %}
-    WHERE genre_type in {{ genres }}
+        INNER JOIN movie_genres USING(imdb_id)
+        INNER JOIN genres USING(genre_id)
     {% endif %}
-    GROUP BY movies.imdb_id
+    {% if actors %}
+        WHERE actors.name in {{ actors | inclause }}
+    {% endif %}
+    {% if directors %}
+        {% if actors %}
+            AND
+        {% else %}
+            WHERE
+        {% endif %}
+        directors.name in {{ directors | inclause }}
+    {% endif %}
+    {% if genres %}
+        {% if actors or directors %}
+            AND
+        {% else %}
+            WHERE
+        {% endif %}
+        genre_type in {{ genres | inclause }}
+    {% endif %}
+        GROUP BY movies.imdb_id
     {% if random %}
-    ORDER BY RANDOM()
+        ORDER BY RANDOM()
     {% endif %}
     {% if num %}
-    LIMIT {{ num }}
+        LIMIT {{ num }}
     {% endif %}
 """
