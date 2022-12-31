@@ -218,3 +218,7 @@ def check_if_genre_exists(
     con.close()
 
     return genres_dict
+
+
+def select_from_filter(data: dict[str, Any]) -> None:
+    pass
