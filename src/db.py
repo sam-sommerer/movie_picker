@@ -39,9 +39,6 @@ def insert_actor(actors_dict: dict[str, bool], imdb_id: str) -> None:
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     for actor in actors_dict:
-        if not actors_dict[actor]:
-            continue
-
         actor_id: str = shortuuid.uuid()
 
         data: dict[str, str] = {"actor_id": actor_id, "name": actor}
@@ -56,6 +53,7 @@ def insert_actor(actors_dict: dict[str, bool], imdb_id: str) -> None:
         query, bind_params = j.prepare_query(INSERT_MOVIE_ACTOR_TEMPLATE, data)
 
         cur.execute(query, bind_params)
+        con.commit()
 
     con.close()
 
@@ -66,9 +64,6 @@ def insert_director(directors_dict: dict[str, bool], imdb_id: str) -> None:
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     for director in directors_dict:
-        if not directors_dict[director]:
-            continue
-
         director_id: str = shortuuid.uuid()
 
         data: dict[str, str] = {"director_id": director_id, "name": director}
@@ -83,6 +78,7 @@ def insert_director(directors_dict: dict[str, bool], imdb_id: str) -> None:
         query, bind_params = j.prepare_query(INSERT_MOVIE_DIRECTOR_TEMPLATE, data)
 
         cur.execute(query, bind_params)
+        con.commit()
 
     con.close()
 
@@ -93,9 +89,6 @@ def insert_genre(genres_dict: dict[str, bool], imdb_id: str) -> None:
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     for genre in genres_dict:
-        if not genres_dict[genre]:
-            continue
-
         genre_id: str = shortuuid.uuid()
 
         data: dict[str, str] = {"genre_id": genre_id, "genre_type": genre}

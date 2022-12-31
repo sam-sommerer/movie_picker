@@ -1,7 +1,7 @@
 INSERT_MOVIE_TEMPLATE = """
     INSERT INTO movies VALUES (
-        {{ imdb_id }}, {{ title }}, {{ year }}, {{ rating }}, {{ release_date }}, {{ runtime }}, {{ plot }},
-        {{ imdb_rating }}, {{ rotten_tomato_rating }}
+        {{ imdb_id }}, {{ title }}, {{ year }}, {{ rating }}, {{ runtime }}, {{ plot }}, {{ imdb_rating }},
+        {{ rotten_tomato_rating }}
     )
 """
 
@@ -42,5 +42,5 @@ CHECK_DIRECTOR_EXISTS_TEMPLATE = """
 """
 
 CHECK_GENRE_EXISTS_TEMPLATE = """
-    SELECT * FROM genres WHERE GENRE.genre_type = {{ genre_type }}
+    SELECT * FROM genres WHERE GENRES.genre_type = {{ genre_type }}
 """
