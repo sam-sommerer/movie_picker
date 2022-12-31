@@ -16,7 +16,7 @@ from jinja_templates import (
 )  # type: ignore
 
 
-def insert_movie(attr: dict[str, Any]) -> None:
+def insert_movie(attr: dict[str, str]) -> None:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
 
@@ -39,7 +39,7 @@ def insert_actor(actors_dict: dict[str, bool]) -> None:
         if not actors_dict[actor]:
             continue
 
-        data = {"actor_id": shortuuid.uuid(), "name": actor}
+        data: dict[str, str] = {"actor_id": shortuuid.uuid(), "name": actor}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_ACTOR_TEMPLATE, data)
@@ -59,7 +59,7 @@ def insert_director(directors_dict: dict[str, bool]) -> None:
         if not directors_dict[director]:
             continue
 
-        data = {"director_id": shortuuid.uuid(), "name": director}
+        data: dict[str, str] = {"director_id": shortuuid.uuid(), "name": director}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_DIRECTOR_TEMPLATE, data)
@@ -79,7 +79,7 @@ def insert_genre(genres_dict: dict[str, bool]) -> None:
         if not genres_dict[genre]:
             continue
 
-        data = {"genre_id": shortuuid.uuid(), "genre_type": genre}
+        data: dict[str, str] = {"genre_id": shortuuid.uuid(), "genre_type": genre}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(INSERT_GENRE_TEMPLATE, data)
@@ -93,7 +93,7 @@ def insert_genre(genres_dict: dict[str, bool]) -> None:
 def check_if_movie_exists(title: str, year: str) -> bool:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
-    data = {"movie": title, "year": year}
+    data: dict[str, str] = {"movie": title, "year": year}
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     query: str
@@ -113,7 +113,7 @@ def check_if_actor_exists(actors_dict: dict[str, bool]) -> dict[str, bool]:
     j = JinjaSql(param_style="qmark")  # type: ignore
 
     for actor in actors_dict:
-        data = {"name": actor}
+        data: dict[str, str] = {"name": actor}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(CHECK_ACTOR_EXISTS_TEMPLATE, data)
@@ -133,7 +133,7 @@ def check_if_director_exists(directors_dict: dict[str, bool]) -> dict[str, bool]
     j = JinjaSql(param_style="qmark")  # type: ignore
 
     for actor in directors_dict:
-        data = {"name": actor}
+        data: dict[str, str] = {"name": actor}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(CHECK_DIRECTOR_EXISTS_TEMPLATE, data)
@@ -153,7 +153,7 @@ def check_if_genre_exists(genres_dict: dict[str, bool]) -> dict[str, bool]:
     j = JinjaSql(param_style="qmark")  # type: ignore
 
     for genre in genres_dict:
-        data = {"genre_type": genre}
+        data: dict[str, str] = {"genre_type": genre}
         query: str
         bind_params: dict[str, Any]
         query, bind_params = j.prepare_query(CHECK_GENRE_EXISTS_TEMPLATE, data)
