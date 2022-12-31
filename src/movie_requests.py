@@ -33,10 +33,12 @@ def extract_db_information(response: dict[str, Any]) -> Any:
     movie_db_attr["rotten_tomato_rating"] = rotten_tomato_rating
     movie_db_attr["imdb_rating"] = imdb_rating
 
-    actors: str = response["Actors"]
-    actors: list[str] = actors.split(", ") if actors is not None else None
+    actors_str: str = response["Actors"]
+    actors_list: list[str] = actors_str.split(", ") if actors_str is not None else None
 
-    directors: str = response["Director"]
-    directors: list[str] = directors.split(", ") if directors is not None else None
+    directors_str: str = response["Director"]
+    directors_list: list[str] = (
+        directors_str.split(", ") if directors_str is not None else None
+    )
 
-    return actors, directors, movie_db_attr
+    return actors_list, directors_list, movie_db_attr
