@@ -11,7 +11,7 @@ def register_movie(
         title=movie["title"], year=movie["year"]
     )
 
-    if movie_exists:
+    if not movie_exists:
         db.insert_movie(movie)
     else:
         return
