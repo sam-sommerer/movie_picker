@@ -1,5 +1,5 @@
-import typer
-from rich.console import Console
+import typer  # type: ignore
+from rich.console import Console  # type: ignore
 from typing import Any, Optional
 
 from movie_requests import get_movie_info, extract_db_information
@@ -65,13 +65,13 @@ def getmovie(
     num: Optional[int] = typer.Option(1),
     random: bool = typer.Option(True),
 ):
-    actors_list: list[str] = (
+    actors_list: Optional[list[str]] = (
         get_formatted_list_from_string(actors) if actors is not None else None
     )
-    directors_list: list[str] = (
+    directors_list: Optional[list[str]] = (
         get_formatted_list_from_string(directors) if directors is not None else None
     )
-    genres_list: list[str] = (
+    genres_list: Optional[list[str]] = (
         get_formatted_list_from_string(genres) if genres is not None else None
     )
     results = get_filtered_movies(
