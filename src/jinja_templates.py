@@ -45,6 +45,10 @@ CHECK_GENRE_EXISTS_TEMPLATE = """
     SELECT genre_id FROM genres WHERE GENRES.genre_type = {{ genre_type }}
 """
 
+DELETE_TEMPLATE = """
+    DELETE FROM movies WHERE title = {{ title }} AND year = {{ year }}
+"""
+
 FILTER_TEMPLATE = """
     SELECT movies.title, movies.year, movies.imdb_rating, movies.rotten_tomato_rating FROM movies
     {% if actors %}
