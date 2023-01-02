@@ -5,7 +5,7 @@ import db
 
 def register_movie(
     actors: list[str], directors: list[str], genres: list[str], movie: dict[str, Any]
-) -> None:
+) -> bool:
     # check if movie is already in db
     movie_exists: bool = db.check_if_movie_exists(
         title=movie["title"], year=movie["year"]
@@ -14,7 +14,7 @@ def register_movie(
     if not movie_exists:
         db.insert_movie(movie)
     else:
-        return
+        return False
 
     imdb_id: str = movie["imdb_id"]
 
@@ -37,6 +37,8 @@ def register_movie(
     genres_dict = db.check_if_genre_exists(genres_dict)
 
     db.insert_genre(genres_dict, imdb_id=imdb_id)
+
+    return True
 
 
 def get_filtered_movies(
@@ -61,3 +63,14 @@ def get_filtered_movies(
         data["random"] = random
 
     return db.select_from_filter(data)
+
+
+def delete_movie(title: str, year: Optional[int] = None) -> bool:
+    args = locals()
+    data: dict[str, str | int] = dict()
+
+    for arg in args:
+        if args[arg] is not None:
+            data[arg] = args[arg]
+
+    return db.delete_movie(data)

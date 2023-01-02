@@ -16,6 +16,7 @@ from jinja_templates import (
     CHECK_ACTOR_EXISTS_TEMPLATE,
     CHECK_DIRECTOR_EXISTS_TEMPLATE,
     CHECK_GENRE_EXISTS_TEMPLATE,
+    DELETE_MOVIE_CHECK_TEMPLATE,
     DELETE_MOVIE_TEMPLATE,
     FILTER_TEMPLATE,
 )  # type: ignore
@@ -238,13 +239,22 @@ def select_from_filter(
     return result.fetchall()
 
 
-def delete_movie(data: dict[str, str | int]) -> None:
+def delete_movie(data: dict[str, str | int]) -> bool:
     con: sqlite3.Connection = sqlite3.connect(DB_FILEPATH)
     cur: sqlite3.Cursor = con.cursor()
 
     j = JinjaSql(param_style="qmark")  # type: ignore
     query: str
     bind_params: dict[str, Any]
+
+    if "year" not in data:
+        query, bind_params = j.prepare_query(DELETE_MOVIE_CHECK_TEMPLATE, data)
+        result = cur.execute(query, bind_params)
+        if len(result.fetchall()) > 1:
+            return False
+
     query, bind_params = j.prepare_query(DELETE_MOVIE_TEMPLATE, data)
     cur.execute(query, bind_params)
     con.commit()
+
+    return True
