@@ -1,6 +1,7 @@
 import requests
 from typing import Any, Optional
 
+from utils import format_str, get_formatted_list_from_string
 from constants import OMDB_API_KEY  # type: ignore
 
 OMDB_URL = "http://www.omdbapi.com"
@@ -16,7 +17,7 @@ def extract_db_information(response: dict[str, Any]) -> Any:
     movie_db_attr: dict[str, Any] = dict()
 
     movie_db_attr["imdb_id"] = response["imdbID"]
-    movie_db_attr["title"] = response["Title"]
+    movie_db_attr["title"] = format_str(response["Title"])
     movie_db_attr["year"] = response["Year"]
     movie_db_attr["rating"] = response["Rated"]
     movie_db_attr["runtime"] = response["Runtime"].split()[0]
@@ -34,18 +35,29 @@ def extract_db_information(response: dict[str, Any]) -> Any:
     movie_db_attr["imdb_rating"] = imdb_rating
 
     actors_str: Optional[str] = response["Actors"]
+    # actors_list: Optional[list[str]] = (
+    #     actors_str.split(", ") if actors_str is not None else None
+    # )
     actors_list: Optional[list[str]] = (
-        actors_str.split(", ") if actors_str is not None else None
+        get_formatted_list_from_string(actors_str) if actors_str is not None else None
     )
 
     directors_str: Optional[str] = response["Director"]
+    # directors_list: Optional[list[str]] = (
+    #     directors_str.split(", ") if directors_str is not None else None
+    # )
     directors_list: Optional[list[str]] = (
-        directors_str.split(", ") if directors_str is not None else None
+        get_formatted_list_from_string(directors_str)
+        if directors_str is not None
+        else None
     )
 
-    genre_str: Optional[str] = response["Genre"]
-    genre_list: Optional[list[str]] = (
-        genre_str.split(", ") if genre_str is not None else None
+    genres_str: Optional[str] = response["Genre"]
+    # genre_list: Optional[list[str]] = (
+    #     genre_str.split(", ") if genre_str is not None else None
+    # )
+    genres_list: Optional[list[str]] = (
+        get_formatted_list_from_string(genres_str) if genres_str is not None else None
     )
 
-    return actors_list, directors_list, genre_list, movie_db_attr
+    return actors_list, directors_list, genres_list, movie_db_attr

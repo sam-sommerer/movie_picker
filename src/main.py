@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from movie_requests import get_movie_info, extract_db_information
 from db_handler import register_movie, get_filtered_movies, delete_movie
-from utils import get_formatted_list_from_string
+from utils import format_str, get_formatted_list_from_string
 from rich_utils import print_movie_filter_results
 
 app = typer.Typer()
@@ -13,6 +13,8 @@ console = Console()
 
 @app.command()
 def register(title: str, year: Optional[str] = typer.Argument(None)):
+    title = format_str(title)
+
     payload: dict[str, str]
     if year is not None:
         payload = {"t": title, "y": year}
@@ -35,30 +37,33 @@ def register(title: str, year: Optional[str] = typer.Argument(None)):
         directors=directors_list,
         genres=genre_list,
     ):
-        console.print("[green]Registration success![/green] :sparkles: :confetti_ball:")
+        console.print(
+            "[bold green]Registration success![/bold green] :sparkles: :confetti_ball:"
+        )
     else:
         console.print(
-            "[bold red]Registration failed![/bold red] :skull: Maybe movie is already registered? :thinking_face:"
+            "[bold red]Registration failed![/bold red] :skull: [steel_blue3]Maybe movie is already registered?[/steel_blue3] :thinking_face:"
         )
 
 
 @app.command()
 def delete(title: str, year: Optional[int] = typer.Argument(None)):
+    title = format_str(title)
     if delete_movie(title=title, year=year):
-        console.print("[green]Movie deleted![/green] :pray:")
+        console.print("[bold green]Movie deleted![/bold green] :pray:")
     else:
         console.print(
-            "[bold red]Deletion failed![/bold red] :flushed: Maybe try specifying the year? :tear-off_calendar:"
+            "[bold red]Deletion failed![/bold red] :flushed: [steel_blue3]Maybe try specifying the year?[/steel_blue3] :tear-off_calendar:"
         )
 
 
 @app.command()
 def getmovie(
-    actors: Optional[str] = typer.Argument(None),
-    directors: Optional[str] = typer.Argument(None),
-    genres: Optional[str] = typer.Argument(None),
-    num: Optional[int] = typer.Argument(1),
-    random: bool = typer.Argument(True),
+    actors: Optional[str] = typer.Option(None),
+    directors: Optional[str] = typer.Option(None),
+    genres: Optional[str] = typer.Option(None),
+    num: Optional[int] = typer.Option(1),
+    random: bool = typer.Option(True),
 ):
     actors_list: list[str] = (
         get_formatted_list_from_string(actors) if actors is not None else None
@@ -76,7 +81,7 @@ def getmovie(
         num=num,
         random=random,
     )
-    print_movie_filter_results(results)
+    print_movie_filter_results(results, console=console)
 
 
 if __name__ == "__main__":
