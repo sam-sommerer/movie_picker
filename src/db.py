@@ -247,6 +247,8 @@ def delete_movie(data: dict[str, str | int]) -> bool:
     query: str
     bind_params: dict[str, Any]
 
+    cur.execute("PRAGMA foreign_keys = ON;")
+
     if "year" not in data:
         query, bind_params = j.prepare_query(DELETE_MOVIE_CHECK_TEMPLATE, data)
         result = cur.execute(query, bind_params)

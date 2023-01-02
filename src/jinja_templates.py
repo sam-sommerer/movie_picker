@@ -50,7 +50,10 @@ DELETE_MOVIE_CHECK_TEMPLATE = """
 """
 
 DELETE_MOVIE_TEMPLATE = """
-    DELETE FROM movies WHERE title = {{ title }} AND year = {{ year }}
+    DELETE FROM movies WHERE title = {{ title }}
+    {% if year %}
+        AND year = {{ year }}
+    {% endif %}
 """
 
 FILTER_TEMPLATE = """
