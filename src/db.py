@@ -16,7 +16,7 @@ from jinja_templates import (
     CHECK_ACTOR_EXISTS_TEMPLATE,
     CHECK_DIRECTOR_EXISTS_TEMPLATE,
     CHECK_GENRE_EXISTS_TEMPLATE,
-    DELETE_TEMPLATE,
+    DELETE_MOVIE_TEMPLATE,
     FILTER_TEMPLATE,
 )  # type: ignore
 
@@ -245,6 +245,6 @@ def delete_movie(data: dict[str, str | int]) -> None:
     j = JinjaSql(param_style="qmark")  # type: ignore
     query: str
     bind_params: dict[str, Any]
-    query, bind_params = j.prepare_query(DELETE_TEMPLATE, data)
+    query, bind_params = j.prepare_query(DELETE_MOVIE_TEMPLATE, data)
     cur.execute(query, bind_params)
     con.commit()

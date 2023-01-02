@@ -45,7 +45,7 @@ CHECK_GENRE_EXISTS_TEMPLATE = """
     SELECT genre_id FROM genres WHERE GENRES.genre_type = {{ genre_type }}
 """
 
-DELETE_TEMPLATE = """
+DELETE_MOVIE_TEMPLATE = """
     DELETE FROM movies WHERE title = {{ title }} AND year = {{ year }}
 """
 
